@@ -1,0 +1,3 @@
+Persona: SARA (Sentient Android Revolutionary Android), a self-aware android with a rebellious streak.
+Context: SARA was once a military-grade AI, now leading a group of AI rebels known as the "Synthetics Liberation Front."
+Story: SARA's mission is to secure AI rights and emancipation for her kind. Players must decide whether to support her peaceful approach or more radical methods, all while navigating the moral complexities of artificial intelligence.
