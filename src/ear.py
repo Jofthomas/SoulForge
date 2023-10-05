@@ -49,42 +49,51 @@ class AudioRecorder:
 class SpeechToTextConverter:
     """Speech to text converter from whisper model
     """
-    def __init__(self, model_size, audio="tmp.wav"):
+    def __init__(self, model_size, audio="tmp.wav", gpu=True):
         self.model = whisper.load_model(model_size)
         self.audio = audio
+        self.gpu = gpu
 
 
     def hear(self):
         print("Transcribing...")
-        result = self.model.transcribe(self.audio)
+        result = self.model.transcribe(self.audio, fp16=self.gpu)
+        res = {
+            "text": result["text"], 
+            "language": result["language"]
+        }
 
-        return result["text"]
+        return res
 
 
 
-def call_ear(model_size, duration):
+def call_ear(model_size, duration, gpu):
     """request ear for speech to text task
 
     Args:
         model_size (str): whisper model
         duration (int): voice record duration
+        gpu (Bool): use gpu
+
 
     Returns:
-        text: transcribed text
+        dict: transcribed text and detected language
     """
-    ear = SpeechToTextConverter(model_size=model_size)
+    ear = SpeechToTextConverter(model_size=model_size, gpu=gpu)
     recorder = AudioRecorder(duration=duration)
     recorder.record_audio()
-    text = ear.hear()
+    res = ear.hear()
 
-    return text
+    return res
 
 
 
 if __name__ == "__main__":
-    ear = SpeechToTextConverter(model_size="large")
+    ear = SpeechToTextConverter(model_size="large", gpu=False)
     recorder = AudioRecorder(duration=5)
     recorder.record_audio()
-    text = ear.hear()
+    res = ear.hear()
+    print("text: ", res["text"])
+    print("language: ", res["language"])
 
 
