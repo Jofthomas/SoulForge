@@ -7,6 +7,10 @@ import shutil
 import subprocess
 import requests
 from typing import Iterator
+from threading import Thread
+from pydub import AudioSegment
+from pydub.playback import play
+from io import BytesIO
 
 class Voice:
     '''
@@ -31,39 +35,16 @@ class Voice:
     def save(self, audio, filename) -> None:
         with open(filename, "wb") as f:
             f.write(audio)
-
-
-    def stream(self, audio_stream: Iterator[bytes]) -> bytes:
-        if not self.is_installed("mpv"):
-            message = (
-                "mpv not found, necessary to stream audio. "
-                "On mac you can install it with 'brew install mpv'. "
-                "On linux and windows you can install it from https://mpv.io/"
-            )
-            raise ValueError(message)
-
-        mpv_command = ["mpv", "--no-cache", "--no-terminal", "--", "fd://0"]
-        mpv_process = subprocess.Popen(
-            mpv_command,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-
-        audio = b""
-
-        for chunk in audio_stream:
-            if chunk is not None:
-                mpv_process.stdin.write(chunk)  # type: ignore
-                mpv_process.stdin.flush()  # type: ignore
-                audio += chunk
-
-        if mpv_process.stdin:
-            mpv_process.stdin.close()
-        mpv_process.wait()
+    
+    def thread_play(self, audio_stream: Iterator[bytes]) -> bytes:
+        try:
+            audio = AudioSegment.from_file(BytesIO(audio_stream), format="wav")
+            # Play audio in a separate thread
+            Thread(target=play, args=(audio,)).start()
+        except:
+            print("oups")
 
         return audio
-
 
     def tts(self, text: str) -> Iterator[bytes]:
         if self.model == "xtts":
@@ -84,6 +65,6 @@ class Voice:
         """
         text: String to transform to audio
         """
-        audio = self.stream(self.tts(text))
+        audio = self.thread_play(self.tts(text))
         if self.save_dest:
             self.save(audio, self.save_dest)
