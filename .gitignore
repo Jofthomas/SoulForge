@@ -1,2 +1,5 @@
 venv/*
 tmp/*
+data_tmp/*
+src/main.py
+src/__pycache__/*

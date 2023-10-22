@@ -1,6 +1,6 @@
 import json
 from typing import Sequence, List,Optional
-from .config import *
+from config import *
 from llama_index.llms import OpenAI, ChatMessage
 from llama_index.tools import BaseTool, FunctionTool
 
