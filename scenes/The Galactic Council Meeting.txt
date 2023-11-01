@@ -1,0 +1,3 @@
+Location: The grand hall of the Galactic Council.
+NPCs: Ambassador K'thrax, Captain Zara Orion, Captain Seraphina Blackthorn, and SARA.
+Scene: The council meeting is in session. Ambassador K'thrax addresses the assembly, attempting to negotiate a peace treaty between different species. Captain Zara Orion listens attentively, keen on maintaining order in the galaxy. Meanwhile, Captain Seraphina Blackthorn and SARA exchange whispered comments, plotting their own schemes.
