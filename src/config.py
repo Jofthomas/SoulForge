@@ -1,1 +1,8 @@
 OPENAI_KEY=""
+
+#Nabula knowledge graph
+NEBULA_USER="root"
+NEBULA_PASSWORD="nebula"
+GRAPHD_HOST="127.0.0.1"
+GRAPHD_PORT="9669"
+NEBULA_ADDRESS="127.0.0.1:9669"
